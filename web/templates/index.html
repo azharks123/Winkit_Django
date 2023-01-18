@@ -1,0 +1,79 @@
+{%extends 'base.html'%}
+{%block body_block%}
+<style>body{
+     background: rgb(240,156,156);
+background: radial-gradient(circle, rgba(240,156,156,1) 0%, rgba(199,221,248,1) 100%); 
+}
+</style>
+<h5 class="display-3">Activity Feed</h5>
+    {% for message in messages %}
+    <div class="alert alert-success" role="alert">
+        {{message}}
+      </div>
+    {% endfor %}
+<div class="row" >
+    <div class="col-3"></div>
+    <div class="col-6" >
+        {%for p in posts%}
+        <div class="card mt-3">
+            <div class="card-body">
+                <p><i class="fa-solid fa-user" style="height: 20px"></i><small>@{{p.user}}</small></p>
+                <small>{{p.created_date}}</small>
+                <img src="{{p.image.url}}" width="100%" alt="">
+                <p class="d-inline card-text display-6">{{p.title}}</p><br>
+                {%if request.user in p.like.all %}
+                <a href="{%url 'add-like' p.id%}" style="height: 30px;color: grey;"><i class="fa-solid fa-heart"
+                        style="height: 30px;color: red;outline: none;"></i>{{p.likes}}</a>
+                {%else%}
+                <a href="{%url 'add-like' p.id%}" style="height: 30px;color: grey;"><i class="fa-regular fa-heart"
+                        style="height: 30px;color: red;outline: none;"></i>{{p.likes}}</a>
+                {%endif%}
+                <span style="font-family: 'Times New Roman', Times, serif;font-style: oblique;color: black;">liked by</span>
+                {%for l in p.like.all%}
+                {{l}},
+                {%endfor%}
+                <!-- accordion -->
+                <div>
+                <button type="button" class="btn btn-outline-light shadow-sm text-dark collapsed "
+                    data-bs-toggle="collapse" data-bs-target="#flush-collapse{{p.id}}" aria-expanded="false"
+                    aria-controls="flush-collapseOne">View all comments</button></div>
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div class="accordion-item">
+                        <div id="flush-collapse{{p.id}}" class="accordion-collapse collapse"
+                            aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample" style="">
+                            <!-- comment section start -->
+                            <form action="{%url 'add-comments' p.id%}" method="post">
+                                {%csrf_token%}
+                                <input type="text" class="d-inline-flex p-2 mt-2 " placeholder="Add your comment"
+                                    name="comment" required>
+                                <button type="submit" class="btn btn-outline-primary mt-2 float-end"><i class="fa-solid fa-circle-right" style="height: 30px;color:cornflowerblue;outline: none;"></i></button>
+                            </form>
+                            <!-- commentsend  -->
+                            <div class="card-body bg-light mt-2">
+                                {%for comment in p.posts_comments%}
+                                <p style="display:inline;"><small> <i class="fa-solid fa-user "></i>
+                                        {{comment.user}}</small></p>
+                                <small>{{comment.created_date}}</small>
+                                <p>{{comment.comment}}
+                                {%if request.user == comment.user%}<button class="btn btn-outline-danger mt-2 float-end"><a href="{%url 'comment-del' comment.id%}"><i class="fa-solid fa-trash" style="color:rgb(0, 0, 0);outline: none;"></i></a></button>
+                                {%endif%}
+                                </p>
+                                <hr>
+                                {%endfor%}
+
+                            </div>
+                        </div>
+                        
+                        <hr>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {%endfor%}
+
+    </div>
+
+    <div class="col-3"></div>
+</div>
+{%endblock%}

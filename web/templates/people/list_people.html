@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+<style>
+    .parent{
+        display: grid;
+    }
+</style>
+
+<div class="list-people">
+
+  <div class="row mt-3">
+    <div class="col-3">
+        
+
+
+
+        {% for message in messages %}
+        {{message}}
+        {% endfor %}
+    </div>
+
+    <div class="col-5">
+
+      <div class="row ms-5">
+
+        <h5>People</h5>
+
+        {% for person in people %}
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="{{person.profile.profile_pic.url}}" class="img-fluid rounded-start p-3" alt="No picture">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{person.username}}</h5>
+                  
+                    <a href="{% url 'add-follower' person.id %}" class="btn btn-ouline-success">follow</a>
+                  
+                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+              </div>
+            </div>
+        </div>
+        {% endfor %}
+</div>
+
+    </div>
+
+    <div class="col-4">
+        <div class="ms-5 me-5">
+
+            <h5 class="mt-5">Trending Posts</h5>
+            {% include 'post/trending-posts.html' %}
+        </div>
+    </div>
+</div>
+
+    
+</div>
+
+{% endblock %}

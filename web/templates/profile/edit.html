@@ -1,0 +1,26 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block body_block%}
+    <style>
+        body{
+             background: rgb(240,156,156);
+        background: radial-gradient(circle, rgba(240,156,156,1) 0%, rgba(199,221,248,1) 100%); 
+        }
+        </style>
+<div class="container">
+    <h2>Edit profile picture</h2>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            
+            
+            <form action="" method="post" enctype="multipart/form-data">
+                {%csrf_token%}
+                {{form.as_p}}
+                <button class="btn btn-outline-success" type="submit">add</button>
+            </form>
+        </div>
+        <div class="col-4"></div>
+    </div>
+</div>
+{%endblock%}

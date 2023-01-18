@@ -1,0 +1,102 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block body_block%}
+<style>
+	body{
+		 background: rgb(240,156,156);
+	background: radial-gradient(circle, rgba(240,156,156,1) 0%, rgba(199,221,248,1) 100%); 
+	}
+	</style>
+<link rel="stylesheet" href="{%static 'css/profile.css'%}">
+<header>
+	<div class="row">
+		<div class="col-3"></div>
+		<div class="col-6">
+			<img src="{{request.user.profile.timelinepic.url}}" class="img-fluid" alt="Responsive image">
+			<div class="profile">
+				<div class="profile-image">
+					<img class="img-fluid rounded-start p-3" src="{{request.user.profile.profile_pic.url}}" alt="">
+				</div>
+				<div class="profile-user-settings">
+					<h3 class="profile-user-name "
+						style="font-weight: 700;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+						{{request.user}}</h3>
+					<button class="btn profile-edit-btn"><a href="{%url 'edit-profile'%}">Edit Profile</a></button>
+					{%if request.user.profile%}
+					<button class="btn profile-edit-btn btn-outline-primary"><a href="{%url 'edit-pic' request.user.profile.id %}"><i class="fa-solid fa-camera-retro"></i></a></button>
+					{% else %}
+					<button class="btn profile-edit-btn"><a href="{%url 'profilepic'%}">Edit Profile</a></button>
+					{%endif%}
+					<button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog"
+							aria-hidden="true"></i></button>
+				</div>
+
+				<div class="profile-stats">
+
+					<ul>
+						<li><span class="profile-stat-count">0</span> posts</li>
+						<li><span class="profile-stat-count">0</span> followers</li>
+						<li><span class="profile-stat-count">0</span> following</li>
+					</ul>
+
+				</div>
+
+			</div>
+			<!-- End of profile section -->
+
+
+			<!-- End of container -->
+
+</header>
+
+<main>
+
+	<div class="container">
+		{% for p in posts%}
+
+
+		<div class="gallery">
+
+
+
+			<div class="gallery-item" tabindex="0">
+
+				<img src="{{p.image.url}}" class="gallery-image" alt="">
+
+				<div class="gallery-item-info">
+
+					<ul>
+						<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
+								class="fas fa-heart" aria-hidden="true"></i>{{p.likes}}</li>
+						<li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i
+								class="fas fa-comment" aria-hidden="true"></i></li>
+						<a href="{%url 'post-delete' p.id%}">
+							<li class="gallery-item-trash p-5"><span class="visually-hidden">Delete:</span><i
+									class="fas fa-trash" style="color: red;" aria-hidden="true"></i></li>
+						</a>
+					</ul>
+
+				</div>
+
+			</div>
+
+
+
+
+		</div>
+		<div>
+			{{p.title}}
+		</div>
+		{%endfor%}
+
+		<!-- End of gallery -->
+
+	</div>
+	<!-- End of container -->
+
+</main>
+</div>
+<div class="col-3"></div>
+</div>
+
+{%endblock%}
